@@ -1,0 +1,96 @@
+variables:
+  TEAM_NAME: "eagles-tj-team"
+  HOST: "pablomed.devbstaging.com"
+  DEPLOYMENT_BRANCH: "master"
+
+  # DO NOT CHANGE
+  IMAGE_URL: $ACR_URL/$TEAM_NAME/frontend
+
+image: docker:latest
+services:
+  - docker:18.09.7-dind
+
+stages:
+  - clone
+  - build_app
+  - build
+  - deploy
+  - status
+
+clone:
+  stage: clone
+  image: alpine:latest
+  before_script:
+    - apk update
+    - apk add curl jq git
+  script:
+    - . ./build-status.gitlab-ci.sh
+    - git clone https://$BITBUCKET_USER:$BITBUCKET_TOKEN@bitbucket.org/"$REPO_URL".git ./git-clone
+    - cd git-clone
+    - git checkout $SOURCE_BRANCH_NAME
+    - status INPROGRESS
+  artifacts:
+    paths:
+      - git-clone/*
+    reports:
+      dotenv: ./build-status.env
+
+build_app:
+  stage: build_app
+  image: node:14
+  script:
+    - cd git-clone
+    - npm ci
+    - npm run test:coverage
+    - npm run build
+  artifacts:
+    paths:
+      - git-clone/build/*
+      - git-clone/coverage/*
+
+build:
+  stage: build
+  image: $ACR_URL/gitlab/packages:latest
+  before_script:
+    - az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+    - az acr login --name $ACR_URL
+  script:
+    - cd git-clone
+    - docker build -t $IMAGE_URL .
+    - docker push $IMAGE_URL
+
+deploy:
+  stage: deploy
+  image: $ACR_URL/gitlab/packages:latest
+  script:
+    - if [[ ! "$PR_STATUS" == "MERGED" && "$TARGET_BRANCH_NAME" == "$DEPLOYMENT_BRANCH" ]]; then exit 0;fi
+    - cd git-clone
+    - helm upgrade
+      --install frontend ./helm/frontend/
+      -f ./helm/frontend/values.yaml
+      -n $TEAM_NAME
+      --create-namespace
+      --set ingress.hosts[0].host=$HOST
+      --set image.repository=$IMAGE_URL
+
+status_ok:
+  stage: status
+  image: alpine:latest
+  before_script:
+    - apk update
+    - apk add curl jq
+  script:
+    - . ./build-status.gitlab-ci.sh
+    - status SUCCESSFUL
+  when: on_success
+
+status_failed:
+  stage: status
+  image: alpine:latest
+  before_script:
+    - apk update
+    - apk add curl jq
+  script:
+    - . ./build-status.gitlab-ci.sh
+    - status FAILED
+  when: on_failure

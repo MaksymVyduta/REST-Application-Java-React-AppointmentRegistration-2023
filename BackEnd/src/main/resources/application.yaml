@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://pg-admin-service.pg-admin:5432/eagles-tj-team
+    username: eagles-tj-team
+    password: Pa8I0M3dPass
+  liquibase:
+    changelog: /db/changelog/db.changelog-master.yaml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+            issuer-uri: https://dev-agnxwxcor6pa7i6f.us.auth0.com/

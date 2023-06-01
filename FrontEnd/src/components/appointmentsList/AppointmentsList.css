@@ -1,0 +1,31 @@
+.appointment {
+    padding: 20px;
+    width: 60vw;
+    margin: auto;
+}
+
+button.book-appointment-button {
+    margin: auto;
+}
+
+.appointments-list {
+    background: white;
+    width: 60vw;
+    margin: 10px auto 10px;
+}
+
+.date-time {
+    font-size: large;
+    font-weight: bold;
+}
+
+.doctor-name {
+    width: 22vw;
+}
+
+.appointment-button {
+    position: absolute;
+    right: 0;
+    padding-top: 10px;
+    padding-right: 35px;
+}

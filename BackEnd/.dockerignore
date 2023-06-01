@@ -1,0 +1,5 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!build/libs/pablo-med-api-*-SNAPSHOT.jar

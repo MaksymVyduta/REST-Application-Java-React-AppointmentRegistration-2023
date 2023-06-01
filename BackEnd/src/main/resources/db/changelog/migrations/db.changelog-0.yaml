@@ -1,0 +1,648 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-demo-table-1
+      author: Tomasz Jastrzebski
+      comment: Sample table to demo Liquibase integration
+      changes:
+        - createTable:
+            tableName: demo_user
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(64)
+  - changeSet:
+      id: insert-demo-table-sample-data-2
+      author: Tomasz Jastrzebski
+      comment: Insert sample data to demo table
+      changes:
+        - sql:
+            sql: >
+              insert into demo_user(first_name, last_name) values ('John', 'Smith');
+              insert into demo_user(first_name) values ('Lucas');
+  - changeSet:
+      id: create-doctor-table-3
+      author: Marysia Antoniak
+      comment: Table for doctors
+      changes:
+        - createTable:
+            tableName: doctor
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uuid
+                  type: uuid
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create-specialization-table-4
+      author: Marysia Antoniak
+      comment: Table for specializations
+      changes:
+            - createTable:
+                tableName: specialization
+                columns:
+                - column:
+                    name: id
+                    type: int
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: name
+                    type: varchar(64)
+                    constraints:
+                        nullable: false
+                - column:
+                    name: visit_time
+                    type: time
+                    constraints:
+                      nullable: false
+                - column:
+                    name: uuid
+                    type: uuid
+                    constraints:
+                      nullable: false
+  - changeSet:
+      id: create-doctor_specialization-table-5
+      author: Marysia Antoniak
+      comment: Junction table for doctor_specialization
+      changes:
+            - createTable:
+                tableName: doctor_specialization
+                columns:
+                - column:
+                    name: doctor_id
+                    type: int
+                    constraints:
+                      nullable: false
+                      foreignKey: true
+                - column:
+                    name: specialization_id
+                    type: int
+                    constraints:
+                        nullable: false
+                        foreignKey: true
+                primaryKey:
+                    columnNames: doctor_id, specialization_id
+  - changeSet:
+      id: insert-doctor-table-sample-data-6
+      author: Marysia Antoniak
+      comment: Insert sample data to doctor table
+      changes:
+          - sql:
+              sql: >
+                insert into doctor(name, uuid) values ('Isaiah Bennett', '043e38a8-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Dexter Cooper', '50358202-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Haris Jordan', '5917bcdc-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Kelly Gibson', '5f82f8a2-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Brett Lopez', '6469e100-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Kevin King', '6ab32f8a-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Aaron Harrison', '7347cd5e-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Elias Morris', '79bba098-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Erica Wright', '7e96a07c-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Jacob Parker', '83aa2b7e-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Anastasia Maxwell', '87d5d6b2-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Isabelle Sanchez', '9056995c-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Sharon Benson', '9427739e-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Aminah Lane', '9c63f2a8-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Georgina Kennedy', 'a2fc5858-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Aidan Logan', 'a84956f8-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Phoebe Shaw', 'ad418fea-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Willie Crawford', 'b2e84718-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Rosemary Keller', 'b6d435b2-d392-11ed-afa1-0242ac120002');
+                insert into doctor(name, uuid) values ('Kaitlyn Castro', 'bb8cc678-d392-11ed-afa1-0242ac120002');
+  - changeSet:
+      id: insert-specialization-table-sample-data-7
+      author: Marysia Antoniak
+      comment: Insert sample data to specialization table
+      changes:
+        - sql:
+            sql: >
+              insert into specialization(name, visit_time, uuid) values ('Cardiology', '00:30:00', 
+              '8657f9f4-d3b6-11ed-afa1-0242ac120002');
+              insert into specialization(name, visit_time, uuid) values ('Neurology', '01:00:00', 
+              '8c70f822-d3b6-11ed-afa1-0242ac120002');
+              insert into specialization(name, visit_time, uuid) values ('Orthopedics', '00:30:00', 
+              '9169bb7a-d3b6-11ed-afa1-0242ac120002');
+              insert into specialization(name, visit_time, uuid) values ('Dermatology', '00:15:00', 
+              '960b10fc-d3b6-11ed-afa1-0242ac120002');
+              insert into specialization(name, visit_time, uuid) values ('Psychiatry', '00:30:00', 
+              '9af3cf3c-d3b6-11ed-afa1-0242ac120002');
+  - changeSet:
+      id: insert-doctor_specialization-table-sample-data-8
+      author: Marysia Antoniak
+      comment: Insert sample data to doctor_specialization table
+      changes:
+        - sql:
+            sql: >
+              insert into doctor_specialization(doctor_id, specialization_id) values (1, 1);
+              insert into doctor_specialization(doctor_id, specialization_id) values (1, 5);
+              insert into doctor_specialization(doctor_id, specialization_id) values (2, 3);
+              insert into doctor_specialization(doctor_id, specialization_id) values (2, 4);
+              insert into doctor_specialization(doctor_id, specialization_id) values (2, 1);
+              insert into doctor_specialization(doctor_id, specialization_id) values (3, 3);
+              insert into doctor_specialization(doctor_id, specialization_id) values (4, 4);
+              insert into doctor_specialization(doctor_id, specialization_id) values (5, 5);
+              insert into doctor_specialization(doctor_id, specialization_id) values (6, 1);
+              insert into doctor_specialization(doctor_id, specialization_id) values (7, 2);
+              insert into doctor_specialization(doctor_id, specialization_id) values (8, 3);
+              insert into doctor_specialization(doctor_id, specialization_id) values (9, 4);
+              insert into doctor_specialization(doctor_id, specialization_id) values (10, 5);
+              insert into doctor_specialization(doctor_id, specialization_id) values (11, 5);
+              insert into doctor_specialization(doctor_id, specialization_id) values (12, 4);
+              insert into doctor_specialization(doctor_id, specialization_id) values (13, 3);
+              insert into doctor_specialization(doctor_id, specialization_id) values (14, 2);
+              insert into doctor_specialization(doctor_id, specialization_id) values (15, 1);
+              insert into doctor_specialization(doctor_id, specialization_id) values (16, 5);
+              insert into doctor_specialization(doctor_id, specialization_id) values (17, 4);
+              insert into doctor_specialization(doctor_id, specialization_id) values (18, 3);
+              insert into doctor_specialization(doctor_id, specialization_id) values (19, 2);
+              insert into doctor_specialization(doctor_id, specialization_id) values (20, 1);
+  - changeSet:
+      id: create-appointments-table
+      author: Maksym Vyduta
+      comment: Table for appointments
+      changes:
+        - createTable:
+            tableName: appointment
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: specialization_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_subaccount_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_time
+                  type: TIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_time
+                  type: TIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: canceled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create-patient-table
+      author: Maksym Vyduta
+      comment: Table for patients
+      changes:
+        - createTable:
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create-patient-sub-accounts-table
+      author: Maksym Vyduta
+      changes:
+        - createTable:
+            tableName: patient_sub_accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: insert-patient-table-sample-data
+      author: Maksym Vyduta
+      changes:
+        - sql:
+            sql: >
+              insert into patient (first_name, last_name, email, phone_number) values ('Andrzej', 'Duda', 'andrzej@wp.pl', '555333777');
+              insert into patient (first_name, last_name, email, phone_number) values ('Joe', 'Biden', 'joe@wp.pl', '752846785');
+              insert into patient (first_name, last_name, email, phone_number) values ('Leo', 'Messi', 'messi@gmail.com', '588866688');
+              insert into patient (first_name, last_name, email, phone_number) values ('Cristiano', 'Ronaldo', 'CR7@gmail.com', '511177799');
+              insert into patient (first_name, last_name, email, phone_number) values ('Michael', 'Jordan', 'mjordan@gmail.com', '987654321');
+  - changeSet:
+      id: insert-patient-sub-account-table-sample-data
+      author: Maksym Vyduta
+      changes:
+        - sql:
+            sql: >
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('1' , 'Agata', 'Duda', 'aga@wp.pl', '555333777');
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('1' , 'Mateusz', 'Morawiecki', 'mati@wp.pl', '555443777');
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('2' , 'Joe Junior', 'Biden', 'joejn@wp.pl', '123123123');
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('3' , 'Jadwiga', 'Messi', 'JM@wp.pl', '234234234');
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('5' , 'Yvette', 'Jordan', 'yvette@wp.pl', '111222333');
+              insert into patient_sub_accounts (patient_id, first_name, last_name, email, phone_number) values ('5' , 'Marcus', 'Jordan', 'marcus@wp.pl', '444555666');
+  - changeSet:
+      id: insert-Appoinment
+      author: Maksym Vyduta
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO appointment (doctor_id, specialization_id, patient_id, patient_subaccount_id, date, start_time, end_time, canceled)
+              VALUES ('1', '1', '3', NULL, '2023-06-27', '13:00', '14:00', 'false');
+              INSERT INTO appointment (doctor_id, specialization_id, patient_id, patient_subaccount_id, date, start_time, end_time, canceled)
+              VALUES ('1', '1', '3', NULL, '2023-06-28', '13:00', '14:00', 'false');
+              
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (1, 1, 2, '2023-04-26', '11:00', '11:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (2, 4, 3, '2023-04-26', '12:00', '12:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (6, 1, 4, '2023-04-26', '13:00', '13:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (19, 2, 5, '2023-04-26', '14:00', '14:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (3, 3, 6, '2023-04-26', '15:00', '15:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (4, 4, 7, '2023-04-26', '16:00', '16:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (20, 1, 8, '2023-04-26', '17:00', '17:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (19, 2, 9, '2023-04-26', '18:00', '18:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (13, 3, 10, '2023-04-26', '19:00', '19:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (12, 4, 11, '2023-04-27', '10:00', '10:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (1, 1, 12, '2023-04-27', '11:00', '11:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (7, 2, 13, '2023-04-27', '12:00', '12:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (13, 3, 14, '2023-04-27', '13:00', '13:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (2, 4, 15, '2023-04-27', '14:00', '14:30', false);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+                VALUES (1, 1, 16, '2023-04-27', '15:00', '15:30', false);
+              
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (19, 2, 17, '2023-04-27', '16:00', '16:30', false);
+              
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (3, 3, 18, '2023-04-27', '17:00', '17:30', false);
+              
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (4, 4, 19, '2023-04-27', '18:00', '18:30', false);
+              
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (1, 1, 20, '2023-04-27', '19:00', '19:30', false);
+  - changeSet:
+      id: insert-doctor_specialization-table-sample-data-11
+      author: Marysia Antoniak
+      comment: Insert sample data to appointment table
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (1, 1, 2, '2023-05-10', '11:00', '11:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (2, 4, 3, '2023-05-10', '12:00', '12:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (6, 1, 4, '2023-05-10', '13:00', '13:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (19, 2, 5, '2023-05-11', '14:00', '14:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (3, 3, 6, '2023-05-11', '15:00', '15:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (4, 4, 7, '2023-05-11', '16:00', '16:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (20, 1, 8, '2023-05-13', '17:00', '17:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (19, 2, 9, '2023-05-13', '18:00', '18:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (13, 3, 10, '2023-05-15', '19:00', '19:30', true);
+
+              INSERT INTO appointment(doctor_id, specialization_id, patient_id, date, start_time, end_time, canceled)
+              VALUES (12, 4, 11, '2023-05-15', '10:00', '10:30', true);
+  - changeSet:
+      id: create-doctor_schedule-table
+      author: Robert Wojcik
+      comment: Table for Doctor's schedules
+      changes:
+        - createTable:
+            tableName: doctor_schedule
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: int
+                  constraints:
+                    foreignKey: true
+                    nullable: false
+              - column:
+                  name: start_hour
+                  type: time
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_hour
+                  type: time
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: insert-patient-table-sample-data
+      author: Robert Wojcik
+      comment: Insert sample data to patient table
+      changes:
+        - sql:
+            sql: >
+              insert into patient (first_name, last_name, email, phone_number) values ('Eleonore', 'Saing', 'rsaing0@mit.edu', '652-496-5270');
+              insert into patient (first_name, last_name, email, phone_number) values ('Marie-therese', 'Killingback', 'skillingback1@shinystat.com', '441-188-9214');
+              insert into patient (first_name, last_name, email, phone_number) values ('Maelle', 'Barthod', 'fbarthod2@census.gov', '607-187-3686');
+              insert into patient (first_name, last_name, email, phone_number) values ('Ai', 'Gregorin', 'hgregorin3@liveinternet.ru', '914-511-4958');
+              insert into patient (first_name, last_name, email, phone_number) values ('Creez', 'Banger', 'jbanger4@cbc.ca', '683-793-2907');
+              insert into patient (first_name, last_name, email, phone_number) values ('Anae', 'Reinger', 'treinger5@globo.com', '498-749-8934');
+              insert into patient (first_name, last_name, email, phone_number) values ('Len', 'Sarton', 'isarton6@artisteer.com', '245-626-8082');
+              insert into patient (first_name, last_name, email, phone_number) values ('Eugenie', 'Menichino', 'vmenichino7@barnesandnoble.com', '960-648-0522');
+              insert into patient (first_name, last_name, email, phone_number) values ('Marlene', 'Franscioni', 'kfranscioni8@goo.gl', '974-688-4798');
+              insert into patient (first_name, last_name, email, phone_number) values ('Nehemie', 'MacParlan', 'omacparlan9@1und1.de', '989-114-0958');
+              insert into patient (first_name, last_name, email, phone_number) values ('Stevina', 'Pettett', 'mpettetta@twitter.com', '446-457-7234');
+              insert into patient (first_name, last_name, email, phone_number) values ('Marie-helene', 'Rumsey', 'jrumseyb@php.net', '702-645-6383');
+              insert into patient (first_name, last_name, email, phone_number) values ('Leone', 'Wolfers', 'awolfersc@ihg.com', '745-570-4667');
+              insert into patient (first_name, last_name, email, phone_number) values ('Serena', 'Beviss', 'dbevissd@msu.edu', '271-941-2419');
+              insert into patient (first_name, last_name, email, phone_number) values ('Desiree', 'Eversley', 'meversleye@cbc.ca', '582-760-4184');
+              insert into patient (first_name, last_name, email, phone_number) values ('Yenora', 'Bainton', 'cbaintonf@ted.com', '725-433-2277');
+              insert into patient (first_name, last_name, email, phone_number) values ('Adelaide', 'Records', 'erecordsg@upenn.edu', '437-652-0287');
+              insert into patient (first_name, last_name, email, phone_number) values ('Frederique', 'Troyes', 'vtroyesh@japanpost.jp', '837-586-8508');
+              insert into patient (first_name, last_name, email, phone_number) values ('Stevina', 'Bidewel', 'lbideweli@google.ru', '989-418-9099');
+              insert into patient (first_name, last_name, email, phone_number) values ('Clea', 'Ovitz', 'covitzj@live.com', '130-556-6408');
+              insert into patient (first_name, last_name, email, phone_number) values ('Asa', 'Handsheart', 'ghandsheartk@geocities.com', '157-105-0493');
+              insert into patient (first_name, last_name, email, phone_number) values ('Rachele', 'Fraulo', 'kfraulol@illinois.edu', '939-277-6199');
+              insert into patient (first_name, last_name, email, phone_number) values ('Leone', 'Jzhakov', 'jjzhakovm@stumbleupon.com', '634-558-2998');
+              insert into patient (first_name, last_name, email, phone_number) values ('Amelie', 'Beinke', 'wbeinken@state.gov', '265-127-9913');
+              insert into patient (first_name, last_name, email, phone_number) values ('Anae', 'Camis', 'lcamiso@chron.com', '793-311-3271');
+              insert into patient (first_name, last_name, email, phone_number) values ('Rui', 'Loton', 'slotonp@privacy.gov.au', '720-176-2769');
+              insert into patient (first_name, last_name, email, phone_number) values ('Marta', 'Ygou', 'aygouq@hexun.com', '561-535-2652');
+              insert into patient (first_name, last_name, email, phone_number) values ('Marylene', 'Littleproud', 'alittleproudr@plala.or.jp', '696-923-7797');
+              insert into patient (first_name, last_name, email, phone_number) values ('Andree', 'Krzysztofiak', 'akrzysztofiaks@artisteer.com', '889-638-5391');
+              insert into patient (first_name, last_name, email, phone_number) values ('Adelie', 'Suddaby', 'esuddabyt@wordpress.com', '489-759-3072');
+  - changeSet:
+      id: insert-doctor_schedule-table-sample-data
+      author: Robert Wojcik
+      comment: Insert sample data to doctor_schedule table
+      changes:
+        - sql:
+            sql: >
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '19:30', '20:00', '2023-08-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:00', '16:00', '2023-08-16');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '8:00', '8:30', '2023-08-17');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '10:30', '10:45', '2023-08-17');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '11:15', '11:45', '2023-08-05');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:15', '16:15', '2023-08-08');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '15:45', '16:00', '2023-08-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:00', '15:30', '2023-08-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '8:45', '9:00', '2023-08-16');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '11:30', '12:00', '2023-08-07');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:30', '13:45', '2023-08-23');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '9:45', '10:15', '2023-08-04');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '16:15', '16:45', '2023-08-27');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '11:30', '12:00', '2023-08-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '19:00', '20:00', '2023-08-28');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '11:15', '12:15', '2023-08-08');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '17:30', '18:00', '2023-08-10');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '10:30', '11:00', '2023-08-15');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '19:15', '19:45', '2023-08-18');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '16:45', '17:00', '2023-08-04');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '10:30', '10:45', '2023-08-06');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '11:00', '12:00', '2023-08-23');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '10:00', '10:15', '2023-08-20');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '8:45', '9:15', '2023-08-12');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '14:30', '15:30', '2023-08-06');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '19:00', '19:30', '2023-08-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '15:00', '15:30', '2023-08-13');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:15', '15:15', '2023-08-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '15:00', '15:30', '2023-08-07');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:45', '15:45', '2023-08-06');
+  - changeSet:
+      id: insert-doctor_schedule-table-sample-data-2
+      author: Marysia Antoniak
+      comment: Insert sample data to doctor_schedule table
+      changes:
+        - sql:
+            sql: >
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '19:30', '20:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:00', '15:30', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '8:00', '8:30', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '10:30', '11:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (5, '11:00', '11:30', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:30', '16:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (3, '15:30', '16:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:00', '15:30', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (4, '8:30', '9:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '8:30', '9:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '10:30', '11:00', '2023-07-30');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:00', '16:30', '2023-07-30');
+  - changeSet:
+      id: insert-doctor_schedule-table-sample-data-3
+      author: Marysia Antoniak
+      comment: Add additional slots for doctors 1 and 2
+      changes:
+        - sql:
+            sql: >
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '08:00', '08:30', '2023-09-27');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '08:30', '09:00', '2023-09-27');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '09:00', '09:30', '2023-09-27');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '09:30', '10:00', '2023-09-27');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '10:00', '10:30', '2023-09-28');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '08:00', '08:30', '2023-09-28');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '08:30', '09:00', '2023-09-28');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '09:00', '09:30', '2023-09-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '09:30', '10:00', '2023-09-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '10:00', '10:30', '2023-09-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '10:30', '11:00', '2023-09-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '11:00', '11:30', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '11:30', '12:00', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '12:00', '12:30', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '12:30', '13:00', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:00', '13:30', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:30', '14:00', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:00', '14:30', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:30', '15:00', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:00', '15:30', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:30', '16:00', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:00', '16:30', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:30', '17:00', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '17:00', '17:30', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:00', '13:30', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:30', '14:00', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:00', '14:30', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:30', '15:00', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:00', '15:30', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:30', '16:00', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:00', '16:30', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:30', '17:00', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '17:00', '17:30', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:00', '13:30', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '13:30', '14:00', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:00', '14:30', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '14:30', '15:00', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:00', '15:30', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '15:30', '16:00', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:00', '16:30', '2023-12-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '16:30', '17:00', '2023-12-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (2, '17:00', '17:30', '2023-12-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '11:00', '11:30', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '11:30', '12:00', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '12:00', '12:30', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '12:30', '13:00', '2023-09-29');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:00', '13:30', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:30', '14:00', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:00', '14:30', '2023-10-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:30', '15:00', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:00', '15:30', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:30', '16:00', '2023-10-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:00', '16:30', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:30', '17:00', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '17:00', '17:30', '2023-10-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:00', '13:30', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:30', '14:00', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:00', '14:30', '2023-11-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:30', '15:00', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:00', '15:30', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:30', '16:00', '2023-11-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:00', '16:30', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:30', '17:00', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '17:00', '17:30', '2023-11-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:00', '13:30', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '13:30', '14:00', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:00', '14:30', '2023-12-01');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '14:30', '15:00', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:00', '15:30', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '15:30', '16:00', '2023-12-02');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:00', '16:30', '2023-12-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '16:30', '17:00', '2023-12-03');
+              insert into doctor_schedule (doctor_id, start_hour, end_hour, date) values (1, '17:00', '17:30', '2023-12-03');

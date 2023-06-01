@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  postgres-db:
+    image: postgres:13-alpine
+    container_name: postgres-dbrest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
